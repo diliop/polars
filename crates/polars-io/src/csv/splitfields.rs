@@ -136,6 +136,8 @@ mod inner {
 mod inner {
     use std::ops::BitOr;
     use std::simd::*;
+    #[cfg(simd_prelude)]
+    use std::simd::prelude::SimdPartialEq;
 
     use polars_utils::slice::GetSaferUnchecked;
     use polars_utils::unwrap::UnwrapUncheckedRelease;

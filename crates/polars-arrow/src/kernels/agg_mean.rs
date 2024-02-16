@@ -1,7 +1,11 @@
 use std::simd::{
-    LaneCount, Mask, Simd, SimdCast, SimdElement, SimdFloat, SimdInt, SimdUint, StdFloat,
-    SupportedLaneCount, ToBitMask,
+    LaneCount, Mask, Simd, SimdCast, SimdElement, StdFloat,
+    SupportedLaneCount,
 };
+#[cfg(simd_prelude)]
+use std::simd::prelude::{SimdFloat, SimdInt, SimdUint};
+#[cfg(not(simd_prelude))]
+use std::simd::{SimdFloat, SimdInt, SimdUint, ToBitMask};
 
 use arrow::array::{Array, PrimitiveArray};
 use arrow::bitmap::utils::{BitChunkIterExact, BitChunksExact};
@@ -94,7 +98,11 @@ where
             let chunk = Simd::from(chunk).cast_custom::<f64>();
 
             // construct [bools]
+            #[cfg(simd_prelude)]
+            let mask = Mask::<i8, LANES>::from_bitmask(validity_chunk.into());
+            #[cfg(not(simd_prelude))]
             let mask = Mask::<i8, LANES>::from_bitmask(validity_chunk);
+
             // let's say we have mask
             //      [true, false, true, true]
             // a cast to int gives:

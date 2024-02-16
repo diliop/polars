@@ -45,6 +45,9 @@ url = { workspace = true, optional = true }
 [dev-dependencies]
 tempdir = "0.3.7"
 
+[build-dependencies]
+version_check = "0.9.4"
+
 [features]
 # support for arrows json parsing
 json = [
